@@ -67,13 +67,26 @@ class MWSClient{
         }
 
         if (!isset($this->MarketplaceIds[$this->config['Marketplace_Id']])) {
-            throw new Exception('Invalid Marketplace Id');
+            if(isset($config['End_Point']) && $config['End_Point'] != ''){
+                $this->setMarketPlaceIds($this->config['Marketplace_Id'], $config['End_Point']);
+            }else{
+                throw new Exception('Invalid Marketplace Id');
+            }
         }
 
         $this->config['Application_Name'] = self::APPLICATION_NAME;
         $this->config['Region_Host'] = $this->MarketplaceIds[$this->config['Marketplace_Id']];
         $this->config['Region_Url'] = 'https://' . $this->config['Region_Host'];
 
+    }
+
+    /**
+     * add marketplaceIds
+     * @param $marketPlaceId
+     * @param $endPoint
+     */
+    public function setMarketPlaceIds($marketPlaceId, $endPoint){
+        $this->MarketplaceIds[$marketPlaceId] = $endPoint;
     }
 
     /**
